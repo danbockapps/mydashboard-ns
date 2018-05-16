@@ -30,14 +30,6 @@ export class LoginComponent implements OnInit {
        console.log('Login component ngOnInit');
     }
 
-    onLoginWithSocialProviderButtonTap(): void {
-        /* ***********************************************************
-        * For log in with social provider you can add your custom logic or
-        * use NativeScript plugin for log in with Facebook
-        * http://market.nativescript.org/plugins/nativescript-facebook
-        *************************************************************/
-    }
-
     onSigninButtonTap(): void {
         const email = this.email;
         const password = this.password;
