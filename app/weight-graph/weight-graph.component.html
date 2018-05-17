@@ -1,0 +1,24 @@
+<RadCartesianChart tkExampleTitle tkToggleNavButton height=300>
+  <DateTimeContinuousAxis
+    tkCartesianHorizontalAxis
+    [minimum]="graphDateMin"
+    [maximum]="graphDateMax"
+    majorStep="Week"
+    dateFormat="MM-dd"
+    labelFitMode="Rotate"
+    labelRotationAngle="1.2">
+  </DateTimeContinuousAxis>
+  <LinearAxis 
+    tkCartesianVerticalAxis
+    [minimum]="graphWeightMin"
+    [maximum]="graphWeightMax"
+    [ios.offset]="graphWeightMin"
+    [ios.baseline]="graphWeightMin">
+  </LinearAxis>
+  <LineSeries
+    tkCartesianSeries
+    [items]="weightData"
+    categoryProperty="date"
+    valueProperty="weight">
+  </LineSeries>
+</RadCartesianChart>
