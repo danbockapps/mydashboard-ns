@@ -5,9 +5,9 @@
     <StackLayout class="page p-t-15">
 
         <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" hint="Email Address" keyboardType="email" autocorrect="false" autocapitalization="none"
-            [(ngModel)]="email"></TextField>
+            [(ngModel)]="user.email"></TextField>
         <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" hint="Password" secure="true" autocorrect="false" autocapitalization="none"
-            [(ngModel)]="password"></TextField>
+            [(ngModel)]="user.password"></TextField>
 
         <Button class="btn btn-primary" text="SIGN IN" (tap)="onSigninButtonTap()"></Button>
         <Label class="m-t-10 m-b-10 m-l-15 m-r-15" text="Forgot password?" (tap)="onForgotPasswordTap()"></Label>
