@@ -19,12 +19,7 @@ export class LoginComponent implements OnInit {
     * Use the constructor to inject app services that you need in this component.
     *************************************************************/
 
-    console.log(new User('da.nbock@gmail.com', 'jjjjjjjj'));
-    console.log(Config.apiUrl);
-
     this.user = Config.defaultUser;
-    console.log(Config);
-
   }
 
   ngOnInit(): void {
