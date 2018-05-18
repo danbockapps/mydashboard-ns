@@ -43,6 +43,13 @@ export class UserService {
     //.catch(this.handleErrors);
   }
 
+  getMessages() {
+    return this.http.get(
+      Config.apiUrl + "messages", {headers: this.createRequestHeaders()} 
+    )
+    .map(response => response.json());
+  }
+
   private createRequestHeaders() {
     let headers = new Headers();
     headers.append("Authorization", "Bearer " + appSettings.getString("token"));

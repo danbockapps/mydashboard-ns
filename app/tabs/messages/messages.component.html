@@ -1,4 +1,5 @@
-<GridLayout class="page page-content">
-  <Label class="page-icon fa" text="&#xf075;"></Label>
-  <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-</GridLayout>
+<ListView [items]="messageList">
+  <ng-template let-item="item">
+    <Label [text]="item.messageText"></Label>
+  </ng-template>
+</ListView>
