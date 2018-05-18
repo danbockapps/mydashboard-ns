@@ -1,4 +1,5 @@
 export class User {
-  email: string;
-  password: string;
+  constructor(private email?:string, private password?:string) {
+
+  }
 }

@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { User } from "~/shared/user/user";
 import { UserService } from "~/shared/user/user.service";
 import * as connectivity from "tns-core-modules/connectivity";
+import { Config } from "~/shared/config";
 
 @Component({
   selector: "Login",
@@ -18,7 +19,12 @@ export class LoginComponent implements OnInit {
     * Use the constructor to inject app services that you need in this component.
     *************************************************************/
 
-    this.user = new User();
+    console.log(new User('da.nbock@gmail.com', 'jjjjjjjj'));
+    console.log(Config.apiUrl);
+
+    this.user = Config.defaultUser;
+    console.log(Config);
+
   }
 
   ngOnInit(): void {
