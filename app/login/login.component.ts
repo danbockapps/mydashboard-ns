@@ -15,18 +15,10 @@ export class LoginComponent implements OnInit {
   user: User;
 
   constructor(private router: Router, private userService: UserService) {
-    /* ***********************************************************
-    * Use the constructor to inject app services that you need in this component.
-    *************************************************************/
-
     this.user = Config.defaultUser;
   }
 
-  ngOnInit(): void {
-    /* ***********************************************************
-    * Use the "ngOnInit" handler to initialize data for this component.
-    *************************************************************/
-  }
+  ngOnInit(): void {}
 
   onSigninButtonTap(): void {
     if (connectivity.getConnectionType() === connectivity.connectionType.none) {
@@ -39,13 +31,7 @@ export class LoginComponent implements OnInit {
           (error) => alert("Unfortunately we could not find your account.")
         );
     }
-
-    this.router.navigate(['tabs']);
   }
 
-  onForgotPasswordTap(): void {
-    /* ***********************************************************
-    * Call your Forgot Password logic here.
-    *************************************************************/
-  }
+  onForgotPasswordTap(): void {}
 }
