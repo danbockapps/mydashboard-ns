@@ -1,5 +1,19 @@
-<ListView [items]="messageList">
-  <ng-template let-item="item">
-    <Label [text]="item.messageText"></Label>
-  </ng-template>
-</ListView>
+
+<ScrollView>
+  <StackLayout id="chatBubbles">
+    <StackLayout visibility="" *ngFor="let message of messageList">
+      <GridLayout width="100%" columns="*" rows="auto, 20" class="msg" [ngClass]="message.getClass()">
+        <StackLayout orientation="horizontal" [horizontalAlignment]="message.getHorizAlign()">
+          <Label [text]="message.messageText" textWrap="true" verticalAlignment="top" class="msg_text">
+          </Label>
+        </StackLayout>
+        <Label class="msg_timestamp" 
+               [text]="message.createDateTime"
+               verticalAlignment="top"
+               row="1"
+               [colSpan]="message.getColSpan()">
+        </Label>
+      </GridLayout>
+    </StackLayout>
+  </StackLayout>
+</ScrollView>

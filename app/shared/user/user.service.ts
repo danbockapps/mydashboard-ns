@@ -29,8 +29,8 @@ export class UserService {
     .do(data => {
       // I don't think Config needs token.
       //Config.token = data.token;
-      console.log(JSON.stringify(data));
       appSettings.setString("token", data.token);
+      appSettings.setNumber("userId", data.userId);
     })
     //.catch(this.handleErrors);
   }

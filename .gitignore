@@ -1,10 +1,12 @@
 .DS_Store
+.vscode
 node_modules
 platforms
 lib
 hooks
 dist
 *.js
+*.css
 *.map
 *.log
 app/shared/config.ts
