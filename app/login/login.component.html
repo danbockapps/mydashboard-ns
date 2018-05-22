@@ -1,8 +1,6 @@
-<ActionBar class="action-bar">
-    <Label class="action-bar-title" text="Login"></Label>
-</ActionBar>
 <ScrollView>
-    <StackLayout class="page p-t-15">
+    <StackLayout class="page p-t-15" id="loginStack">
+        <Image id="logo" src="~/esmmwl_logo.png" stretch="none"></Image>
 
         <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" hint="Email Address" keyboardType="email" autocorrect="false" autocapitalization="none"
             [(ngModel)]="user.email"></TextField>
@@ -13,3 +11,4 @@
         <Label class="m-t-10 m-b-10 m-l-15 m-r-15" text="Forgot password?" (tap)="onForgotPasswordTap()"></Label>
     </StackLayout>
 </ScrollView>
+
