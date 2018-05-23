@@ -1,4 +1,4 @@
-import { OnInit, Component } from "@angular/core";
+import { OnInit, Component, Input } from "@angular/core";
 import { UserService } from "../shared/user/user.service";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 
@@ -11,7 +11,8 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 })
 
 export class WeightGraphComponent implements OnInit {
-  private weightData: ObservableArray<WeightDataPoint>;
+  @Input() weightData:ObservableArray<WeightDataPoint>;
+
   private graphWeightMax: number;
   private graphWeightMin: number;
   private graphDateMax: any;
@@ -30,14 +31,8 @@ export class WeightGraphComponent implements OnInit {
   }
 
   refreshWeight(): void {
-    this.weightData = new ObservableArray([
-      { date: new Date('2018-01-01').getTime(), weight: 174 },
-      { date: new Date('2018-01-08').getTime(), weight: 173 },
-      { date: new Date('2018-01-22').getTime(), weight: 175 }
-    ]);
-
-    this.graphWeightMax = 176;
-    this.graphWeightMin = 172;
+    this.graphWeightMax = 175;
+    this.graphWeightMin = 171;
 
     // Either of these works.
     this.graphDateMin = "01/01/2018";
@@ -48,7 +43,6 @@ export class WeightGraphComponent implements OnInit {
   }
 }
 
-class WeightDataPoint {
-  date: number;
-  weight: number;
+export class WeightDataPoint {
+  constructor(public date: number, public weight: number) {}
 }
