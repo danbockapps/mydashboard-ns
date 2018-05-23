@@ -1,3 +1,5 @@
+@import '~/app-variables';
+
 .msg {
   font-size: 20px;
   margin-top: 5px;
@@ -5,18 +7,20 @@
 }
 
 .me .msg_text {
-  background-color: #30A9FF;
+  background-color: $esmmwl-blue;
   color: white;
   padding: 10em;
   margin-left: 40px;
+  margin-right: 10px;
   border-radius: 15;
 }
 
 .them .msg_text {
-  background-color: #e0e0e0;
-  color: #333;
+  background-color: $esmmwl-green;
+  color: white;
   padding: 10em;
   border-radius: 15;
+  margin-left: 10px;
   margin-right: 40px;
 }
 

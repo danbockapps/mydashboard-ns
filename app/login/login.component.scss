@@ -1,3 +1,5 @@
+@import '~/app-variables';
+
 #logo {
   margin-bottom: 30em;
   horizontal-align: center;
@@ -8,5 +10,5 @@
 }
 
 .btn-primary {
-  background-color: #25bdae;
+  background-color: $esmmwl-teal;
 }

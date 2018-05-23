@@ -8,7 +8,8 @@ import { ObservableArray } from "tns-core-modules/data/observable-array/observab
   selector: "Home",
   providers: [UserService],
   moduleId: module.id,
-  templateUrl: "./home.component.html"
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
   private weightData:ObservableArray<WeightDataPoint>;
