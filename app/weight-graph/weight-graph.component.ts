@@ -23,7 +23,7 @@ export class WeightGraphComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.bounds = new WeightGraphBounds(200, 100);
+    this.bounds = new WeightGraphBounds(5, 0);
   }
 }
 
