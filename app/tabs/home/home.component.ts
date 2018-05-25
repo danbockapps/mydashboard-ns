@@ -3,6 +3,8 @@ import * as connectivity from "tns-core-modules/connectivity";
 import { UserService } from "~/shared/user/user.service";
 import { WeightDataPoint } from "~/weight-graph/weight-graph.component";
 import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
+import * as appSettings from "application-settings";
+import * as moment from "moment";
 
 @Component({
   selector: "Home",
@@ -24,6 +26,8 @@ export class HomeComponent implements OnInit {
       this.userService.getDashboard().subscribe(
         (data) => {
           console.log(JSON.stringify(data));
+          appSettings.setNumber("userId", data.userId);
+          appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
           this.weightData = this.getObservableArray(data.weight);
         },
         (error) => alert("Unfortunately we could not find your account.")
@@ -36,15 +40,12 @@ export class HomeComponent implements OnInit {
   }
 
   private getObservableArray(weightArray):ObservableArray<WeightDataPoint> {
-    let newArray = weightArray.map(function(datapoint) {
-      // TODO convert datapoints to WeightDataPoints
-    });
-
-    return new ObservableArray([
-      { date: new Date('2018-01-01').getTime(), weight: 173 },
-      { date: new Date('2018-01-08').getTime(), weight: 174 },
-      { date: new Date('2018-01-15').getTime(), weight: 172 },
-      { date: new Date('2018-01-22').getTime(), weight: 172 }
-    ]);
+    let classStart:moment.Moment = moment(appSettings.getNumber("startDttm"), 'X');
+    return new ObservableArray(weightArray.map(function(datapoint) {
+      return new WeightDataPoint(
+        Number(classStart.add(datapoint.week, 'weeks').format('x')),
+        datapoint.weight
+      );
+    }));
   }
 }
