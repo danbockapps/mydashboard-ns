@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import * as connectivity from "tns-core-modules/connectivity";
 import { UserService } from "~/shared/user/user.service";
-import { WeightDataPoint } from "~/weight-graph/weight-graph.component";
-import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
+import { WeightDataPoint, WeightGraphBounds } from "~/weight-graph/weight-graph.component";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as appSettings from "application-settings";
 import * as moment from "moment";
 
@@ -15,6 +15,7 @@ import * as moment from "moment";
 })
 export class HomeComponent implements OnInit {
   private weightData:ObservableArray<WeightDataPoint>;
+  private bounds:WeightGraphBounds;
 
   constructor(private userService:UserService) {}
 
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
           appSettings.setNumber("userId", data.userId);
           appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
           this.weightData = this.getObservableArray(data.weight);
+          this.bounds = this.getBounds(this.weightData);
         },
         (error) => alert("Unfortunately we could not find your account.")
       );
@@ -43,9 +45,24 @@ export class HomeComponent implements OnInit {
     let classStart:moment.Moment = moment(appSettings.getNumber("startDttm"), 'X');
     return new ObservableArray(weightArray.map(function(datapoint) {
       return new WeightDataPoint(
-        Number(classStart.add(datapoint.week, 'weeks').format('x')),
+        // moment(classStart) clones the classStart object,
+        // so it doesn't get changed.
+        moment(classStart).add(datapoint.week, 'weeks').toDate(),
         datapoint.weight
       );
     }));
+  }
+
+  private getBounds(weightData:ObservableArray<WeightDataPoint>):WeightGraphBounds {
+    let maxWeight:number = weightData.reduce(function(prev, current) {
+      return (prev.weight > current.weight) ? prev : current;
+    }, weightData.getItem(0)).weight;
+
+    let minWeight:number = weightData.reduce(
+      (prev, current) => (prev.weight < current.weight) ? prev : current,
+      weightData.getItem(0)
+    ).weight;
+
+    return new WeightGraphBounds(maxWeight, minWeight);
   }
 }

@@ -12,11 +12,7 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 
 export class WeightGraphComponent implements OnInit {
   @Input() weightData:ObservableArray<WeightDataPoint>;
-
-  private graphWeightMax: number;
-  private graphWeightMin: number;
-  private graphDateMax: any;
-  private graphDateMin: any;
+  @Input() bounds:WeightGraphBounds; 
 
   /*
   "Mostly we use ngOnInit for all the initialization/declaration and avoid
@@ -27,22 +23,17 @@ export class WeightGraphComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.refreshWeight();
-  }
-
-  refreshWeight(): void {
-    this.graphWeightMax = 175;
-    this.graphWeightMin = 171;
-
-    // Either of these works.
-    this.graphDateMin = "01/01/2018";
-    this.graphDateMin = new Date('2018-01-02');
-
-    this.graphDateMax = "02/02/2018";
-    this.graphDateMax = new Date('2018-01-23');
+    this.bounds = new WeightGraphBounds(200, 100);
   }
 }
 
 export class WeightDataPoint {
-  constructor(public date: number, public weight: number) {}
+  constructor(public date: Date, public weight: number) {}
+}
+
+export class WeightGraphBounds {
+  constructor(
+    public graphWeightMax:number,
+    public graphWeightMin:number
+  ) {}
 }
