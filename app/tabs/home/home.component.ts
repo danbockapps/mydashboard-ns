@@ -16,6 +16,7 @@ import * as moment from "moment";
 export class HomeComponent implements OnInit {
   private weightData:ObservableArray<WeightDataPoint>;
   private bounds:WeightGraphBounds;
+  private graphStatus:number = 0;
 
   constructor(private userService:UserService) {}
 
@@ -26,11 +27,20 @@ export class HomeComponent implements OnInit {
     else {
       this.userService.getDashboard().subscribe(
         (data) => {
-          console.log(JSON.stringify(data));
+          console.log(JSON.stringify(data, null, 2));
           appSettings.setNumber("userId", data.userId);
           appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
           this.weightData = this.getObservableArray(data.weight);
-          this.bounds = this.getBounds(this.weightData);
+
+          if(this.weightData.length <= 1) {
+            // Graph isn't gonna show, but needs some dummy bounds so it won't crash
+            this.bounds = new WeightGraphBounds(1, 0);
+            this.graphStatus = 1;
+          }
+          else {
+            this.bounds = this.getBounds(this.weightData);
+            this.graphStatus = 2;
+          }
         },
         (error) => alert("Unfortunately we could not find your account.")
       );
@@ -43,7 +53,10 @@ export class HomeComponent implements OnInit {
 
   private getObservableArray(weightArray):ObservableArray<WeightDataPoint> {
     let classStart:moment.Moment = moment(appSettings.getNumber("startDttm"), 'X');
-    return new ObservableArray(weightArray.map(function(datapoint) {
+
+    // filter here because you can't have null data in a graph
+    return new ObservableArray(weightArray.filter(s => s.weight > 0)
+                                          .map(function(datapoint) {
       return new WeightDataPoint(
         // moment(classStart) clones the classStart object,
         // so it doesn't get changed.
@@ -54,15 +67,17 @@ export class HomeComponent implements OnInit {
   }
 
   private getBounds(weightData:ObservableArray<WeightDataPoint>):WeightGraphBounds {
-    let maxWeight:number = weightData.reduce(function(prev, current) {
+    let maxWeight:number, minWeight:number;
+
+    maxWeight = weightData.reduce(function(prev, current) {
       return (prev.weight > current.weight) ? prev : current;
     }, weightData.getItem(0)).weight;
 
-    let minWeight:number = weightData.reduce(
+    minWeight = weightData.reduce(
       (prev, current) => (prev.weight < current.weight) ? prev : current,
       weightData.getItem(0)
     ).weight;
 
-    return new WeightGraphBounds(maxWeight, minWeight);
+    return new WeightGraphBounds(maxWeight + 1, minWeight - 1);
   }
 }

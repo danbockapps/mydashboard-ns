@@ -23,6 +23,10 @@ export class WeightGraphComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
+    // This is a hack to get vertical axis labels one per pound,
+    // which is a good frequency for most participants.
+    // The frequency of labels seems to be set when the graph
+    // is initialized and doesn't change when the data comes in.
     this.bounds = new WeightGraphBounds(5, 0);
   }
 }
