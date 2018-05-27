@@ -8,12 +8,14 @@ import { WeightGraphComponent } from "~/weight-graph/weight-graph.component";
 import { NativeScriptHttpModule } from "nativescript-angular/http";
 import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import { MessagesComponent } from "~/tabs/messages/messages.component";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
 @NgModule({
     imports: [
         NativeScriptCommonModule,
         NativeScriptHttpModule,
         NativeScriptUIChartModule,
+        NativeScriptFormsModule,
         TabsRoutingModule
     ],
     declarations: [

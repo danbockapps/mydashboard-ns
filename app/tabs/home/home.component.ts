@@ -5,10 +5,12 @@ import { WeightDataPoint, WeightGraphBounds } from "~/weight-graph/weight-graph.
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as appSettings from "application-settings";
 import * as moment from "moment";
+import { HomeService } from "~/shared/home.service";
+import { WeekData } from "~/shared/weekData";
 
 @Component({
   selector: "Home",
-  providers: [UserService],
+  providers: [UserService, HomeService],
   moduleId: module.id,
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"]
@@ -17,8 +19,12 @@ export class HomeComponent implements OnInit {
   private weightData:ObservableArray<WeightDataPoint>;
   private bounds:WeightGraphBounds;
   private graphStatus:number = 0;
+  
+   weekData:WeekData;
 
-  constructor(private userService:UserService) {}
+  constructor(private userService:UserService, private homeService:HomeService) {
+    this.weekData = new WeekData();
+  }
 
   ngOnInit(): void {
     if (connectivity.getConnectionType() === connectivity.connectionType.none) {
@@ -30,6 +36,7 @@ export class HomeComponent implements OnInit {
           console.log(JSON.stringify(data, null, 2));
           appSettings.setNumber("userId", data.userId);
           appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
+          appSettings.setNumber("classId", data.class.class_id);
           this.weightData = this.getObservableArray(data.weight);
 
           if(this.weightData.length <= 1) {
@@ -48,7 +55,10 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmitButtonTap():void {
-    console.log('Submit button tapped.');
+    this.homeService.postNewData(this.weekData).subscribe(
+      (data) => console.log(data),
+      (error) => console.log(error)
+    );
   }
 
   private getObservableArray(weightArray):ObservableArray<WeightDataPoint> {

@@ -4,6 +4,7 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { UtilitiesService } from "~/shared/utilities.service";
 
 @NgModule({
     bootstrap: [
@@ -19,6 +20,9 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
     ],
     schemas: [
         NO_ERRORS_SCHEMA
+    ],
+    providers: [
+        UtilitiesService
     ]
 })
 export class AppModule { }

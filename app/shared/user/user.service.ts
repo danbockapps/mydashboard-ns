@@ -8,10 +8,11 @@ import { Config } from "../config";
 // This is TypeScript for var appSettings = require("application-settings");
 import * as appSettings from "application-settings";
 import { User } from "~/shared/user/user";
+import { UtilitiesService } from "~/shared/utilities.service";
 
 @Injectable()
 export class UserService {
-  constructor(private http: Http) {}
+  constructor(private http: Http, private utilitiesService:UtilitiesService) {}
 
   login(user: User) {
     let headers = new Headers();
@@ -37,7 +38,7 @@ export class UserService {
 
   getDashboard() {
     return this.http.get(
-      Config.apiUrl + "dashboard", {headers: this.createRequestHeaders()}
+      Config.apiUrl + "dashboard", {headers: this.utilitiesService.createRequestHeaders()}
     )
     .map(response => response.json())
     //.catch(this.handleErrors);
@@ -45,15 +46,9 @@ export class UserService {
 
   getMessages() {
     return this.http.get(
-      Config.apiUrl + "messages", {headers: this.createRequestHeaders()} 
+      Config.apiUrl + "messages", {headers: this.utilitiesService.createRequestHeaders()} 
     )
     .map(response => response.json());
-  }
-
-  private createRequestHeaders() {
-    let headers = new Headers();
-    headers.append("Authorization", "Bearer " + appSettings.getString("token"));
-    return headers;
   }
 
   handleErrors(error: Response) {
