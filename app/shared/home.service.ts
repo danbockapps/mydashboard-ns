@@ -22,7 +22,8 @@ export class HomeService {
         weekId: this.getCurrentWeekId(),
         weight: data.weight,
         aerobicMinutes: data.aerobicMinutes,
-        strengthMinutes: data.strengthMinutes
+        strengthMinutes: data.strengthMinutes,
+        avgSteps: data.avgSteps
       }),
       {headers: this.utilitiesService.createRequestHeaders()}
     )
