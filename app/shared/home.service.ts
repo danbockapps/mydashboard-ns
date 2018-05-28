@@ -14,7 +14,6 @@ export class HomeService {
   constructor(private http: Http, private utilitiesService:UtilitiesService) {}
 
   postNewData(data:WeekData) {
-    console.log(data);
     return this.http.post(
       Config.apiUrl + "postNewData",
       JSON.stringify({
@@ -27,6 +26,7 @@ export class HomeService {
       }),
       {headers: this.utilitiesService.createRequestHeaders()}
     )
+    .map(response => response.json());
   }
 
   private getCurrentWeekId():number {

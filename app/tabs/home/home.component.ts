@@ -19,8 +19,7 @@ export class HomeComponent implements OnInit {
   private weightData:ObservableArray<WeightDataPoint>;
   private bounds:WeightGraphBounds;
   private graphStatus:number = 0;
-  
-   weekData:WeekData;
+  private weekData:WeekData;
 
   constructor(private userService:UserService, private homeService:HomeService) {
     this.weekData = new WeekData();
@@ -56,7 +55,12 @@ export class HomeComponent implements OnInit {
 
   onSubmitButtonTap():void {
     this.homeService.postNewData(this.weekData).subscribe(
-      (data) => console.log(data),
+      (data) => {
+        console.log(JSON.stringify(data));
+
+        // Clear form
+        this.weekData = new WeekData();
+      },
       (error) => console.log(error)
     );
   }
