@@ -60,6 +60,12 @@ export class HomeComponent implements OnInit {
 
         // Clear form
         this.weekData = new WeekData();
+
+        // Update graph data
+        this.weightData = this.getObservableArray(data.weight);
+
+        // Update graph bounds
+        this.bounds = this.getBounds(this.weightData);
       },
       (error) => console.log(error)
     );
