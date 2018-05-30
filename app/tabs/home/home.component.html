@@ -1,42 +1,44 @@
-<StackLayout>
-  <!-- TODO styling for these two -->
-  <Label #loadingTxt .
-         *ngIf = "graphStatus === 0"
-         text = "Loading..."></Label>
-  <Label #helloTxt
-         *ngIf="graphStatus === 1"
-         text="Hello! Your weight graph will apear here as soon as you have at least two data points.">
-  </Label>
+<ScrollView>
+  <StackLayout>
+    <!-- TODO styling for these two -->
+    <Label #loadingTxt .
+          *ngIf = "graphStatus === 0"
+          text = "Loading..."></Label>
+    <Label #helloTxt
+          *ngIf="graphStatus === 1"
+          text="Hello! Your weight graph will apear here as soon as you have at least two data points.">
+    </Label>
 
-  <!-- ngIf didn't work here - I guess the graph needed to be initialized on
-    startup or something. Also, it looks like I can't directly hide the
-    md-weight-graph. I have to wrap it in a Layout and hide that. -->
-  <StackLayout [class.hidden-graph] = "graphStatus !== 2">
-    <md-weight-graph 
-                    [weightData]="weightData"
-                    [bounds]="bounds">
-    </md-weight-graph>
+    <!-- ngIf didn't work here - I guess the graph needed to be initialized on
+      startup or something. Also, it looks like I can't directly hide the
+      md-weight-graph. I have to wrap it in a Layout and hide that. -->
+    <StackLayout [class.hidden-graph] = "graphStatus !== 2">
+      <md-weight-graph 
+                      [weightData]="weightData"
+                      [bounds]="bounds">
+      </md-weight-graph>
+    </StackLayout>
+
+    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+              hint="Weight"
+              keyboardType="number"
+              [(ngModel)]="weekData.weight">
+    </TextField>
+    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+              hint="Minutes of aerobic activity"
+              keyboardType="number"
+              [(ngModel)]="weekData.aerobicMinutes">
+    </TextField>
+    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+              hint="Minutes of strength training"
+              keyboardType="number"
+              [(ngModel)]="weekData.strengthMinutes">
+    </TextField>
+    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+              hint="Average steps per day"
+              keyboardType="number"
+              [(ngModel)]="weekData.avgSteps">
+    </TextField>
+    <Button class="btn btn-primary" text="Submit" (tap)="onSubmitButtonTap()"></Button>
   </StackLayout>
-
-  <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-             hint="Weight"
-             keyboardType="number"
-             [(ngModel)]="weekData.weight">
-  </TextField>
-  <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-             hint="Minutes of aerobic activity"
-             keyboardType="number"
-             [(ngModel)]="weekData.aerobicMinutes">
-  </TextField>
-  <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-             hint="Minutes of strength training"
-             keyboardType="number"
-             [(ngModel)]="weekData.strengthMinutes">
-  </TextField>
-  <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-             hint="Average steps per day"
-             keyboardType="number"
-             [(ngModel)]="weekData.avgSteps">
-  </TextField>
-  <Button class="btn btn-primary" text="Submit" (tap)="onSubmitButtonTap()"></Button>
-</StackLayout>
+</ScrollView>

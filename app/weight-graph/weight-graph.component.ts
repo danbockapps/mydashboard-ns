@@ -27,7 +27,8 @@ export class WeightGraphComponent implements OnInit {
     // which is a good frequency for most participants.
     // The frequency of labels seems to be set when the graph
     // is initialized and doesn't change when the data comes in.
-    this.bounds = new WeightGraphBounds(5, 0);
+    // Also: https://github.com/telerik/nativescript-ui-feedback/issues/681
+    this.bounds = new WeightGraphBounds(1000, 995);
   }
 }
 
