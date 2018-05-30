@@ -1,5 +1,5 @@
 
-<ScrollView>
+<ScrollView #chatScrollView>
   <StackLayout id="chatBubbles">
     <StackLayout visibility="" *ngFor="let message of messageList">
       <GridLayout width="100%" columns="*" rows="auto, 20" class="msg" [ngClass]="message.getClass()">

@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { UserService } from "~/shared/user/user.service";
 import * as appSettings from "application-settings";
+import { ScrollView } from "ui/scroll-view";
 
 @Component({
   selector: "Messages",
@@ -12,6 +13,7 @@ import * as appSettings from "application-settings";
 
 export class MessagesComponent implements OnInit {
   messageList: Array<Message> = [];
+  @ViewChild("chatScrollView") elementRef: ElementRef;;
 
   constructor(private userService:UserService) {}
 
@@ -29,6 +31,12 @@ export class MessagesComponent implements OnInit {
             message.message,
             message.create_dttm
           ));
+        });
+
+        let scrollView = <ScrollView>this.elementRef.nativeElement;
+
+        setTimeout(function() {
+          scrollView.scrollToVerticalOffset(scrollView.scrollableHeight, false);
         });
       },
       (error) => {
