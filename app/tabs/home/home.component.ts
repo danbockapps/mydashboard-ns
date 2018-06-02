@@ -7,6 +7,8 @@ import * as appSettings from "application-settings";
 import * as moment from "moment";
 import { HomeService } from "~/shared/home.service";
 import { WeekData } from "~/shared/weekData";
+import { SelectedIndexChangedEventData, ValueList } from "nativescript-drop-down";
+import { DropDownConfig } from "~/shared/dropDownConfig";
 
 @Component({
   selector: "Home",
@@ -20,9 +22,18 @@ export class HomeComponent implements OnInit {
   private bounds:WeightGraphBounds;
   private graphStatus:number = 0;
   private weekData:WeekData;
+  dropDownConfig:DropDownConfig = new DropDownConfig();
 
   constructor(private userService:UserService, private homeService:HomeService) {
     this.weekData = new WeekData();
+    this.dropDownConfig.hint = "Tap here for dropdown.";
+    this.dropDownConfig.items = new ValueList<string>();
+    for (let loop = 0; loop < 200; loop++) {
+      this.dropDownConfig.items.push({
+          value: `I${loop}`,
+          display: `Item ${loop}`,
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -32,7 +43,6 @@ export class HomeComponent implements OnInit {
     else {
       this.userService.getDashboard().subscribe(
         (data) => {
-          console.log(JSON.stringify(data, null, 2));
           appSettings.setNumber("userId", data.userId);
           appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
           appSettings.setNumber("classId", data.class.class_id);
@@ -99,5 +109,12 @@ export class HomeComponent implements OnInit {
     ).weight;
 
     return new WeightGraphBounds(maxWeight + 1, minWeight - 1);
+  }
+
+  public onchange(args: SelectedIndexChangedEventData) {
+    // Do we actually need this function?
+    console.log(`Drop Down selected index changed from ${args.oldIndex} to 
+        ${args.newIndex}. New value is "${this.dropDownConfig.items.getValue(
+        args.newIndex)}"`);
   }
 }

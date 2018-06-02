@@ -9,6 +9,8 @@ import { NativeScriptHttpModule } from "nativescript-angular/http";
 import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import { MessagesComponent } from "~/tabs/messages/messages.component";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { DropDownModule } from "nativescript-drop-down/angular";
+
 
 @NgModule({
     imports: [
@@ -16,7 +18,8 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
         NativeScriptHttpModule,
         NativeScriptUIChartModule,
         NativeScriptFormsModule,
-        TabsRoutingModule
+        TabsRoutingModule,
+        DropDownModule
     ],
     declarations: [
         TabsComponent,

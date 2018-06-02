@@ -19,6 +19,13 @@
       </md-weight-graph>
     </StackLayout>
 
+    <DropDown [items]="dropDownConfig.items"
+              [(ngModel)]="selectedIndex"
+              [hint]="dropDownConfig.hint"
+              (selectedIndexChanged)="onchange($event)"
+              [class]="dropDownConfig.cssClass">
+    </DropDown>
+
     <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
               hint="Weight"
               keyboardType="number"
