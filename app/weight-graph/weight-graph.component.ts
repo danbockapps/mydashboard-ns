@@ -1,6 +1,8 @@
 import { OnInit, Component, Input } from "@angular/core";
 import { UserService } from "../shared/user/user.service";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
+import { WeightDataPoint } from "~/shared/weightDataPoint";
+import { WeightGraphBounds } from "~/shared/weighGraphBounds";
 
 @Component({
   selector: "md-weight-graph",
@@ -30,15 +32,4 @@ export class WeightGraphComponent implements OnInit {
     // Also: https://github.com/telerik/nativescript-ui-feedback/issues/681
     this.bounds = new WeightGraphBounds(1000, 995);
   }
-}
-
-export class WeightDataPoint {
-  constructor(public date: Date, public weight: number) {}
-}
-
-export class WeightGraphBounds {
-  constructor(
-    public graphWeightMax:number,
-    public graphWeightMin:number
-  ) {}
 }

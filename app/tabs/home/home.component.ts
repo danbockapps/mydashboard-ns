@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import * as connectivity from "tns-core-modules/connectivity";
 import { UserService } from "~/shared/user/user.service";
-import { WeightDataPoint, WeightGraphBounds } from "~/weight-graph/weight-graph.component";
+import { WeightGraphBounds } from "~/shared/weighGraphBounds";
+import { WeightDataPoint } from "~/shared/weightDataPoint"
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as appSettings from "application-settings";
 import * as moment from "moment";
@@ -18,13 +19,13 @@ import { DropDownConfig } from "~/shared/dropDownConfig";
   styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
-  private weightData:ObservableArray<WeightDataPoint>;
-  private bounds:WeightGraphBounds;
-  private graphStatus:number = 0;
-  private weekData:WeekData;
+  weightData:ObservableArray<WeightDataPoint>;
+  bounds:WeightGraphBounds;
+  graphStatus:number = 0;
+  weekData:WeekData;
   dropDownConfig:DropDownConfig = new DropDownConfig();
 
-  constructor(private userService:UserService, private homeService:HomeService) {
+  constructor(readonly userService:UserService, readonly homeService:HomeService) {
     this.weekData = new WeekData();
     this.dropDownConfig.hint = "Tap here for dropdown.";
     this.dropDownConfig.items = new ValueList<string>();
