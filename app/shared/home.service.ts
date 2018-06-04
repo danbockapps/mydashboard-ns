@@ -18,7 +18,7 @@ export class HomeService {
       Config.apiUrl + "postNewData",
       JSON.stringify({
         classId: appSettings.getNumber('classId'),
-        weekId: this.getCurrentWeekId(),
+        week: data.week,
         weight: data.weight,
         aerobicMinutes: data.aerobicMinutes,
         strengthMinutes: data.strengthMinutes,
@@ -29,13 +29,12 @@ export class HomeService {
     .map(response => response.json());
   }
 
-  private getCurrentWeekId():number {
-    // Week ID is 0 for 24 hours after class start, then 1 until 24 hours after
+  getCurrentWeek():number {
+    // Week is 0 for 24 hours after class start, then 1 until 24 hours after
     // the second class, etc.
     let classStart:Moment = moment(appSettings.getNumber("startDttm"), 'X');
     let daysSinceClassStart:number = moment().diff(classStart, "days");
-    let currentWeekId = Math.ceil(daysSinceClassStart / 7);
-    console.log("Current week id is " + currentWeekId);
-    return currentWeekId;
+    let currentWeek = Math.ceil(daysSinceClassStart / 7);
+    return currentWeek;
   }
 }

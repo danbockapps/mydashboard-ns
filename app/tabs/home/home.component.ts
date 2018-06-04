@@ -11,6 +11,8 @@ import { WeekData } from "~/shared/weekData";
 import { SelectedIndexChangedEventData, ValueList } from "nativescript-drop-down";
 import { DropDownConfig } from "~/shared/dropDownConfig";
 
+//TODO prevent user from selecting a future week from the DropDown
+
 @Component({
   selector: "Home",
   providers: [UserService, HomeService],
@@ -19,22 +21,17 @@ import { DropDownConfig } from "~/shared/dropDownConfig";
   styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
-  weightData:ObservableArray<WeightDataPoint>;
+  numWeeks:number = 15; //TODO unhardcode this
+  graphData:ObservableArray<WeightDataPoint>;
+  allData:any; // Really this is an array of WeekData.
   bounds:WeightGraphBounds;
   graphStatus:number = 0;
-  weekData:WeekData;
   dropDownConfig:DropDownConfig = new DropDownConfig();
 
   constructor(readonly userService:UserService, readonly homeService:HomeService) {
-    this.weekData = new WeekData();
-    this.dropDownConfig.hint = "Tap here for dropdown.";
-    this.dropDownConfig.items = new ValueList<string>();
-    for (let loop = 0; loop < 200; loop++) {
-      this.dropDownConfig.items.push({
-          value: `I${loop}`,
-          display: `Item ${loop}`,
-      });
-    }
+    // Need this or we get an error before the first rest call, when the view
+    // tries to bind to objects that don't exist yet.
+    this.allData = this.createDummyData();
   }
 
   ngOnInit(): void {
@@ -47,16 +44,30 @@ export class HomeComponent implements OnInit {
           appSettings.setNumber("userId", data.userId);
           appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
           appSettings.setNumber("classId", data.class.class_id);
-          this.weightData = this.getObservableArray(data.weight);
 
-          if(this.weightData.length <= 1) {
+          // Might be nice to have one object instead of two here, but that breaks the graph
+          // if there are null values for weight, which of course is possible.
+          this.allData = this.getIndexedData(data.data);
+          this.graphData = this.getObservableArray(data.data);
+
+          this.dropDownConfig.currentWeek = this.homeService.getCurrentWeek();
+          
+          if(this.graphData.length <= 1) {
             // Graph isn't gonna show, but needs some dummy bounds so it won't crash
             this.bounds = new WeightGraphBounds(1, 0);
             this.graphStatus = 1;
           }
           else {
-            this.bounds = this.getBounds(this.weightData);
+            this.bounds = this.getBounds(this.graphData);
             this.graphStatus = 2;
+          }
+
+          this.dropDownConfig.items = new ValueList<string>();
+          for(let i=0; i<this.numWeeks; i++) {
+            this.dropDownConfig.items.push({
+              value: "" + i,
+              display: "Week " + i
+            });
           }
         },
         (error) => alert("Unfortunately we could not find your account.")
@@ -65,18 +76,18 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmitButtonTap():void {
-    this.homeService.postNewData(this.weekData).subscribe(
+    this.homeService.postNewData(this.allData[this.dropDownConfig.currentWeek]).subscribe(
       (data) => {
         console.log(JSON.stringify(data));
 
-        // Clear form
-        this.weekData = new WeekData();
+        // Update data model
+        this.allData = this.getIndexedData(data.data);
 
         // Update graph data
-        this.weightData = this.getObservableArray(data.weight);
+        this.graphData = this.getObservableArray(data.data);
 
         // Update graph bounds
-        this.bounds = this.getBounds(this.weightData);
+        this.bounds = this.getBounds(this.graphData);
       },
       (error) => console.log(error)
     );
@@ -117,5 +128,29 @@ export class HomeComponent implements OnInit {
     console.log(`Drop Down selected index changed from ${args.oldIndex} to 
         ${args.newIndex}. New value is "${this.dropDownConfig.items.getValue(
         args.newIndex)}"`);
+  }
+
+  private createDummyData():Array<WeekData> {
+    let array:Array<WeekData> = new Array<WeekData>();
+    for(let i=0; i<this.numWeeks; i++) {
+      array.push(new WeekData());
+    }
+    return array;
+  }
+
+  private getIndexedData(data):Array<WeekData> {
+    let indexed:Array<WeekData> = new Array<WeekData>(this.numWeeks);
+
+    data.forEach(element => {
+      indexed[element.week] = new WeekData(
+        element.week,
+        element.weight,
+        element.aerobic_minutes,
+        element.strength_minutes,
+        element.avgsteps
+      );
+    });
+
+    return indexed;
   }
 }

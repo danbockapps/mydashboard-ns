@@ -14,14 +14,13 @@
       md-weight-graph. I have to wrap it in a Layout and hide that. -->
     <StackLayout [class.hidden-graph] = "graphStatus !== 2">
       <md-weight-graph 
-                      [weightData]="weightData"
+                      [weightData]="graphData"
                       [bounds]="bounds">
       </md-weight-graph>
     </StackLayout>
 
     <DropDown [items]="dropDownConfig.items"
-              [(ngModel)]="selectedIndex"
-              [hint]="dropDownConfig.hint"
+              [(ngModel)]="dropDownConfig.currentWeek"
               (selectedIndexChanged)="onchange($event)"
               [class]="dropDownConfig.cssClass">
     </DropDown>
@@ -29,22 +28,22 @@
     <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
               hint="Weight"
               keyboardType="number"
-              [(ngModel)]="weekData.weight">
+              [(ngModel)]="allData[dropDownConfig.currentWeek].weight">
     </TextField>
     <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
               hint="Minutes of aerobic activity"
               keyboardType="number"
-              [(ngModel)]="weekData.aerobicMinutes">
+              [(ngModel)]="allData[dropDownConfig.currentWeek].aerobicMinutes">
     </TextField>
     <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
               hint="Minutes of strength training"
               keyboardType="number"
-              [(ngModel)]="weekData.strengthMinutes">
+              [(ngModel)]="allData[dropDownConfig.currentWeek].strengthMinutes">
     </TextField>
     <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
               hint="Average steps per day"
               keyboardType="number"
-              [(ngModel)]="weekData.avgSteps">
+              [(ngModel)]="allData[dropDownConfig.currentWeek].avgSteps">
     </TextField>
     <Button class="btn btn-primary" text="Submit" (tap)="onSubmitButtonTap()"></Button>
   </StackLayout>
