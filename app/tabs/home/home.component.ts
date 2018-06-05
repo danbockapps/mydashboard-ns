@@ -41,12 +41,12 @@ export class HomeComponent implements OnInit {
           appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
           appSettings.setNumber("classId", data.class.class_id);
 
+          this.dropDownConfig.currentWeek = this.homeService.getCurrentWeek();
+
           // Might be nice to have one object instead of two here, but that breaks the graph
           // if there are null values for weight, which of course is possible.
-          this.allData = this.getIndexedData(data.data);
+          this.allData = this.getIndexedData(data.data, this.dropDownConfig.currentWeek);
           this.graphData = this.getObservableArray(data.data);
-
-          this.dropDownConfig.currentWeek = this.homeService.getCurrentWeek();
           
           if(this.graphData.length <= 1) {
             // Graph isn't gonna show, but needs some dummy bounds so it won't crash
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
         console.log(JSON.stringify(data));
 
         // Update data model
-        this.allData = this.getIndexedData(data.data);
+        this.allData = this.getIndexedData(data.data, this.dropDownConfig.currentWeek);
 
         // Update graph data
         this.graphData = this.getObservableArray(data.data);
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit {
         args.newIndex)}"`);
   }
 
-  private getIndexedData(data):Array<WeekData> {
+  private getIndexedData(data, currentWeek):Array<WeekData> {
     let indexed:Array<WeekData> = new Array<WeekData>(this.numWeeks);
 
     data.forEach(element => {
@@ -138,6 +138,12 @@ export class HomeComponent implements OnInit {
         element.avgsteps
       );
     });
+
+    for(let i:number=0; i<=currentWeek; i++) {
+      if(!indexed[i]) {
+        indexed[i] = new WeekData(i);
+      }
+    }
 
     return indexed;
   }
