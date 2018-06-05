@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
 import * as connectivity from "tns-core-modules/connectivity";
 import { UserService } from "~/shared/user/user.service";
 import { WeightGraphBounds } from "~/shared/weighGraphBounds";
@@ -8,10 +8,9 @@ import * as appSettings from "application-settings";
 import * as moment from "moment";
 import { HomeService } from "~/shared/home.service";
 import { WeekData } from "~/shared/weekData";
-import { SelectedIndexChangedEventData, ValueList } from "nativescript-drop-down";
+import { SelectedIndexChangedEventData, ValueList, DropDown } from "nativescript-drop-down";
 import { DropDownConfig } from "~/shared/dropDownConfig";
-
-//TODO prevent user from selecting a future week from the DropDown
+import { Moment } from "moment";
 
 @Component({
   selector: "Home",
@@ -23,10 +22,11 @@ import { DropDownConfig } from "~/shared/dropDownConfig";
 export class HomeComponent implements OnInit {
   numWeeks:number = 15; //TODO unhardcode this
   graphData:ObservableArray<WeightDataPoint>;
-  allData:any; // Really this is an array of WeekData.
+  allData:Array<WeekData>;
   bounds:WeightGraphBounds;
   graphStatus:number = 0;
   dropDownConfig:DropDownConfig = new DropDownConfig();
+  @ViewChild("dropDown") elementRef: ElementRef
 
   constructor(readonly userService:UserService, readonly homeService:HomeService) {}
 
@@ -38,7 +38,8 @@ export class HomeComponent implements OnInit {
       this.userService.getDashboard().subscribe(
         (data) => {
           appSettings.setNumber("userId", data.userId);
-          appSettings.setNumber("startDttm", Number(moment(data.class.start_dttm).format('X')));
+          let startDttm:Moment = moment(data.class.start_dttm);
+          appSettings.setNumber("startDttm", Number(startDttm.format('X')));
           appSettings.setNumber("classId", data.class.class_id);
 
           this.dropDownConfig.currentWeek = this.homeService.getCurrentWeek();
@@ -59,10 +60,11 @@ export class HomeComponent implements OnInit {
           }
 
           this.dropDownConfig.items = new ValueList<string>();
-          for(let i=0; i<this.numWeeks; i++) {
+          for(let i=0; i <= this.dropDownConfig.currentWeek; i++) {
             this.dropDownConfig.items.push({
               value: "" + i,
-              display: "Week " + i
+              display: "Week " + (i+1) + ": " +
+                moment(startDttm).add(i, 'weeks').format("MMMM Do")
             });
           }
         },
@@ -89,8 +91,13 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  onCaretTap():void {
+    let dropDown = <DropDown>this.elementRef.nativeElement;
+    dropDown.open();
+  }
+
   private getObservableArray(weightArray):ObservableArray<WeightDataPoint> {
-    let classStart:moment.Moment = moment(appSettings.getNumber("startDttm"), 'X');
+    let classStart:Moment = moment(appSettings.getNumber("startDttm"), 'X');
 
     // filter here because you can't have null data in a graph
     return new ObservableArray(weightArray.filter(s => s.weight > 0)
@@ -117,13 +124,6 @@ export class HomeComponent implements OnInit {
     ).weight;
 
     return new WeightGraphBounds(maxWeight + 1, minWeight - 1);
-  }
-
-  public onchange(args: SelectedIndexChangedEventData) {
-    // Do we actually need this function?
-    console.log(`Drop Down selected index changed from ${args.oldIndex} to 
-        ${args.newIndex}. New value is "${this.dropDownConfig.items.getValue(
-        args.newIndex)}"`);
   }
 
   private getIndexedData(data, currentWeek):Array<WeekData> {

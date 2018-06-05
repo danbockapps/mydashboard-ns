@@ -8,22 +8,18 @@
   visibility: collapse;
 }
 
-.default {
-  padding: 15;
-  background-color: red;
-  color: yellow;
-  font-size: 25;
-  font-weight: bold;
-  font-style: italic;
-  text-align: center;
-  text-decoration: underline;
-  margin: 20;
+#dropDownLayout {
+  horizontal-align: center;
 }
-.changed-styles {
-  padding: 10;
-  font-size: 35;
-  text-decoration: line-through;
-  background-color: blue;
-  color: green;
-  text-align: right;
+
+#caret-down {
+  padding-left: 10;
+  padding-bottom: 4;
+  vertical-align: bottom;
+}
+
+.default {
+  font-size: 18;
+  text-align: center;
+  margin-top: 20;
 }
