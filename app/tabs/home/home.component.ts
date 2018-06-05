@@ -28,11 +28,7 @@ export class HomeComponent implements OnInit {
   graphStatus:number = 0;
   dropDownConfig:DropDownConfig = new DropDownConfig();
 
-  constructor(readonly userService:UserService, readonly homeService:HomeService) {
-    // Need this or we get an error before the first rest call, when the view
-    // tries to bind to objects that don't exist yet.
-    this.allData = this.createDummyData();
-  }
+  constructor(readonly userService:UserService, readonly homeService:HomeService) {}
 
   ngOnInit(): void {
     if (connectivity.getConnectionType() === connectivity.connectionType.none) {
@@ -128,14 +124,6 @@ export class HomeComponent implements OnInit {
     console.log(`Drop Down selected index changed from ${args.oldIndex} to 
         ${args.newIndex}. New value is "${this.dropDownConfig.items.getValue(
         args.newIndex)}"`);
-  }
-
-  private createDummyData():Array<WeekData> {
-    let array:Array<WeekData> = new Array<WeekData>();
-    for(let i=0; i<this.numWeeks; i++) {
-      array.push(new WeekData());
-    }
-    return array;
   }
 
   private getIndexedData(data):Array<WeekData> {

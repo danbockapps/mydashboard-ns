@@ -19,32 +19,34 @@
       </md-weight-graph>
     </StackLayout>
 
-    <DropDown [items]="dropDownConfig.items"
-              [(ngModel)]="dropDownConfig.currentWeek"
-              (selectedIndexChanged)="onchange($event)"
-              [class]="dropDownConfig.cssClass">
-    </DropDown>
+    <StackLayout *ngIf = "allData">
+      <DropDown [items]="dropDownConfig.items"
+                [(ngModel)]="dropDownConfig.currentWeek"
+                (selectedIndexChanged)="onchange($event)"
+                [class]="dropDownConfig.cssClass">
+      </DropDown>
 
-    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-              hint="Weight"
-              keyboardType="number"
-              [(ngModel)]="allData[dropDownConfig.currentWeek].weight">
-    </TextField>
-    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-              hint="Minutes of aerobic activity"
-              keyboardType="number"
-              [(ngModel)]="allData[dropDownConfig.currentWeek].aerobicMinutes">
-    </TextField>
-    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-              hint="Minutes of strength training"
-              keyboardType="number"
-              [(ngModel)]="allData[dropDownConfig.currentWeek].strengthMinutes">
-    </TextField>
-    <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-              hint="Average steps per day"
-              keyboardType="number"
-              [(ngModel)]="allData[dropDownConfig.currentWeek].avgSteps">
-    </TextField>
-    <Button class="btn btn-primary" text="Submit" (tap)="onSubmitButtonTap()"></Button>
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+                hint="Weight"
+                keyboardType="number"
+                [(ngModel)]="allData[dropDownConfig.currentWeek].weight">
+      </TextField>
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+                hint="Minutes of aerobic activity"
+                keyboardType="number"
+                [(ngModel)]="allData[dropDownConfig.currentWeek].aerobicMinutes">
+      </TextField>
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+                hint="Minutes of strength training"
+                keyboardType="number"
+                [(ngModel)]="allData[dropDownConfig.currentWeek].strengthMinutes">
+      </TextField>
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
+                hint="Average steps per day"
+                keyboardType="number"
+                [(ngModel)]="allData[dropDownConfig.currentWeek].avgSteps">
+      </TextField>
+      <Button class="btn btn-primary" text="Submit" (tap)="onSubmitButtonTap()"></Button>
+    </StackLayout>
   </StackLayout>
 </ScrollView>
