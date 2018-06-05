@@ -10,6 +10,7 @@ import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import { MessagesComponent } from "~/tabs/messages/messages.component";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { DropDownModule } from "nativescript-drop-down/angular";
+import { SmartGoalComponent } from "~/tabs/smartGoal/smartGoal.component";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { DropDownModule } from "nativescript-drop-down/angular";
         TabsComponent,
         HomeComponent,
         MessagesComponent,
+        SmartGoalComponent,
         WeightGraphComponent
     ],
     schemas: [
