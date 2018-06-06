@@ -9,16 +9,16 @@ tapping on some of the tabs or by swiping between the views.
 Learn more about the TabView component in this documentation article:
 http://docs.nativescript.org/angular/code-samples/ui/tab-view
 -->
-<TabView (selectedIndexChanged)="onSelectedIndexChanged($event)">
-    <StackLayout *tabItem="{title: 'Home', iconSource: getIconSource('home')}">
+<TabView (selectedIndexChanged)="onSelectedIndexChanged($event)" class="fa">
+    <StackLayout *tabItem="{title: 'Home', iconSource: getIconSource('loss')}">
         <Home></Home>
     </StackLayout>
 
-    <StackLayout *tabItem="{title: 'Messages', iconSource: getIconSource('browse')}">
+    <StackLayout *tabItem="{title: 'Messages', iconSource: getIconSource('chat')}">
         <Messages></Messages>
     </StackLayout>
 
-    <StackLayout *tabItem="{title: 'Smart Goal', iconSource: getIconSource('smartGoal')}">
+    <StackLayout *tabItem="{title: 'Smart Goal', iconSource: getIconSource('goal')}">
         <SmartGoal></SmartGoal>
     </StackLayout>
 </TabView>
