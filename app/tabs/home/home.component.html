@@ -1,56 +1,61 @@
 <ScrollView>
   <StackLayout>
     <!-- TODO styling for these two -->
-    <Label #loadingTxt .
-          *ngIf = "graphStatus === 0"
-          text = "Loading..."></Label>
+    <Label #loadingTxt
+           *ngIf="graphStatus === 0"
+           text="Loading..."></Label>
     <Label #helloTxt
-          *ngIf="graphStatus === 1"
-          text="Hello! Your weight graph will apear here as soon as you have at least two data points.">
+           *ngIf="graphStatus === 1"
+           text="Hello! Your weight graph will apear here as soon as you have at least two data points.">
     </Label>
 
     <!-- ngIf didn't work here - I guess the graph needed to be initialized on
       startup or something. Also, it looks like I can't directly hide the
       md-weight-graph. I have to wrap it in a Layout and hide that. -->
-    <StackLayout [class.hidden-graph] = "graphStatus !== 2">
-      <md-weight-graph 
-                      [weightData]="graphData"
-                      [bounds]="bounds">
+    <StackLayout [class.hidden-graph]="graphStatus !== 2">
+      <md-weight-graph [weightData]="graphData"
+                       [bounds]="bounds">
       </md-weight-graph>
     </StackLayout>
 
-    <StackLayout *ngIf = "allData">
+    <StackLayout *ngIf="allData">
 
-      <StackLayout orientation="horizontal" id="dropDownLayout">
+      <StackLayout orientation="horizontal"
+                   id="dropDownLayout">
         <DropDown #dropDown
                   [items]="dropDownConfig.items"
                   [(ngModel)]="dropDownConfig.currentWeek"
                   [class]="dropDownConfig.cssClass">
         </DropDown>
-        <Label id="caret-down" class="fa" text="&#xf0d7;" (tap)="onCaretTap()"></Label>
+        <Label id="caret-down"
+               class="fa"
+               text="&#xf0d7;"
+               (tap)="onCaretTap()"></Label>
       </StackLayout>
 
-      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-                hint="Weight"
-                keyboardType="number"
-                [(ngModel)]="allData[dropDownConfig.currentWeek].weight">
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15"
+                 hint="Weight"
+                 keyboardType="number"
+                 [(ngModel)]="allData[dropDownConfig.currentWeek].weight">
       </TextField>
-      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-                hint="Minutes of aerobic activity"
-                keyboardType="number"
-                [(ngModel)]="allData[dropDownConfig.currentWeek].aerobicMinutes">
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15"
+                 hint="Minutes of aerobic activity"
+                 keyboardType="number"
+                 [(ngModel)]="allData[dropDownConfig.currentWeek].aerobicMinutes">
       </TextField>
-      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-                hint="Minutes of strength training"
-                keyboardType="number"
-                [(ngModel)]="allData[dropDownConfig.currentWeek].strengthMinutes">
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15"
+                 hint="Minutes of strength training"
+                 keyboardType="number"
+                 [(ngModel)]="allData[dropDownConfig.currentWeek].strengthMinutes">
       </TextField>
-      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15" 
-                hint="Average steps per day"
-                keyboardType="number"
-                [(ngModel)]="allData[dropDownConfig.currentWeek].avgSteps">
+      <TextField class="m-t-10 m-b-10 m-l-15 m-r-15"
+                 hint="Average steps per day"
+                 keyboardType="number"
+                 [(ngModel)]="allData[dropDownConfig.currentWeek].avgSteps">
       </TextField>
-      <Button class="btn btn-primary" text="Submit" (tap)="onSubmitButtonTap()"></Button>
+      <Button class="btn btn-esmmwl"
+              text="Submit"
+              (tap)="onSubmitButtonTap()"></Button>
     </StackLayout>
   </StackLayout>
 </ScrollView>

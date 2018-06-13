@@ -1,0 +1,18 @@
+@import '~/app-variables';
+
+.instructionsStart {
+  text-align: center;
+}
+
+.esmmwl-border {
+  border-color: $esmmwl-teal;
+  border-width: $esmmwl-border-radius;
+  border-radius: $esmmwl-border-radius;
+}
+
+$edge-padding: 20;
+
+.edge-padding {
+  margin-right: $edge-padding;
+  margin-left: $edge-padding;
+}

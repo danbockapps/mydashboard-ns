@@ -1,1 +1,41 @@
-<Label text="hello world"></Label>
+<ScrollView>
+  <StackLayout class="form">
+
+    <Label [text]="instructionsStart"
+           textWrap="true"
+           class="edge-padding m-t-20 h2 instructionsStart">
+    </Label>
+
+    <Button *ngIf="!showInstructionsEnd"
+            text="Read more"
+            class="link"
+            (tap)="showInstructionsEnd = true">
+    </Button>
+
+    <Label *ngIf="showInstructionsEnd"
+           [text]="instructionsEnd"
+           textWrap="true"
+           class="edge-padding body">
+    </Label>
+
+    <Label text="Your SMART Goal:"
+           class="text-center m-t-20">
+    </Label>
+
+    <StackLayout class="edge-padding esmmwl-border">
+      <TextView [(ngModel)]="sgInput"
+                returnKeyType="done"
+                (returnPress)="submit()"
+                hint="Enter your SMART goal..."
+                class="p-10"
+                font-size="20">
+      </TextView>
+    </StackLayout>
+
+    <Button text="Save"
+            class="edge-padding btn btn-esmmwl"
+            (tap)="save()">
+    </Button>
+
+  </StackLayout>
+</ScrollView>
