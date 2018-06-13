@@ -38,6 +38,7 @@
   "devDependencies": {
     "@angular/compiler-cli": "^5.2.11",
     "@ngtools/webpack": "~1.9.4",
+    "@types/jasmine": "^2.8.8",
     "babel-traverse": "6.26.0",
     "babel-types": "6.26.0",
     "babylon": "6.18.0",
