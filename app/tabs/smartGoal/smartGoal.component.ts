@@ -26,10 +26,14 @@ export class SmartGoalComponent implements OnInit {
   }
 
   getSmartGoal(): void {
-    this.sgInput = this.smartGoalService.get();
+    this.smartGoalService.get().subscribe(resp => this.sgInput = resp.smartGoal);
   }
 
   saveSmartGoal(): void {
-    this.smartGoalService.post(this.sgInput);
+    this.smartGoalService.post(this.sgInput).subscribe(resp => {
+      //TODO make sure resp is HTTP 200 before showing this alert.
+      console.log(resp);
+      alert('Your SMART Goal has been updated.');
+    });
   }
 }
