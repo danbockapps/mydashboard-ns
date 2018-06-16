@@ -1,6 +1,6 @@
 import { OnInit, Component } from "@angular/core";
 import * as appSettings from "application-settings";
-import { Router } from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({
   selector: "More",
@@ -9,13 +9,13 @@ import { Router } from "@angular/router";
   styleUrls: ["./more.component.scss"]
 })
 export class MoreComponent implements OnInit {
-  constructor(private router: Router) { }
+  constructor(private routerExtensions: RouterExtensions) { }
 
   ngOnInit(): void { }
 
   onSignOutButtonTap(): void {
     appSettings.remove('token');
     appSettings.remove('userId');
-    this.router.navigate(['login']);
+    this.routerExtensions.navigate(['login'], { clearHistory: true });
   }
 }

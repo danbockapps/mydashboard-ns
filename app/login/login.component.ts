@@ -4,6 +4,7 @@ import { User } from "~/shared/user/user";
 import { UserService } from "~/shared/user/user.service";
 import * as connectivity from "tns-core-modules/connectivity";
 import { Config } from "~/shared/config";
+import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({
   selector: "Login",
@@ -15,11 +16,14 @@ import { Config } from "~/shared/config";
 export class LoginComponent implements OnInit {
   user: User;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(
+    private routerExtensions: RouterExtensions,
+    private userService: UserService
+  ) {
     this.user = Config.defaultUser;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSigninButtonTap(): void {
     if (connectivity.getConnectionType() === connectivity.connectionType.none) {
@@ -28,11 +32,11 @@ export class LoginComponent implements OnInit {
     else {
       this.userService.login(this.user)
         .subscribe(
-          () => this.router.navigate(["/tabs"]),
+          () => this.routerExtensions.navigate(['/tabs'], { clearHistory: true }),
           (error) => alert("Unfortunately we could not find your account.")
         );
     }
   }
 
-  onForgotPasswordTap(): void {}
+  onForgotPasswordTap(): void { }
 }
