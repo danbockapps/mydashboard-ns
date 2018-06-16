@@ -11,6 +11,7 @@ import { MessagesComponent } from "~/tabs/messages/messages.component";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { DropDownModule } from "nativescript-drop-down/angular";
 import { SmartGoalComponent } from "~/tabs/smartGoal/smartGoal.component";
+import { MoreComponent } from "~/tabs/more/more.component";
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { SmartGoalComponent } from "~/tabs/smartGoal/smartGoal.component";
         HomeComponent,
         MessagesComponent,
         SmartGoalComponent,
+        MoreComponent,
         WeightGraphComponent
     ],
     schemas: [
