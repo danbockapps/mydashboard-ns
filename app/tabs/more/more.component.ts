@@ -16,6 +16,7 @@ export class MoreComponent implements OnInit {
   onSignOutButtonTap(): void {
     appSettings.remove('token');
     appSettings.remove('userId');
+    appSettings.remove('currentTab');
     this.routerExtensions.navigate(['login'], { clearHistory: true });
   }
 }

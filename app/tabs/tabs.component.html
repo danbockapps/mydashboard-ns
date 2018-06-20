@@ -5,7 +5,8 @@ Learn more about the TabView component in this documentation article:
 http://docs.nativescript.org/angular/code-samples/ui/tab-view
 -->
 <TabView (selectedIndexChanged)="onSelectedIndexChanged($event)"
-         class="fa">
+         class="fa"
+         #tabView>
     <StackLayout *tabItem="{title: 'Home', iconSource: getIconSource('loss')}">
         <Home></Home>
     </StackLayout>

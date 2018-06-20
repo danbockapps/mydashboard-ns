@@ -1,42 +1,29 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { isAndroid } from "platform";
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
+import * as appSettings from "application-settings";
 
 @Component({
-    selector: "TabsComponent",
-    moduleId: module.id,
-    templateUrl: "./tabs.component.html",
-    styleUrls: ["./tabs.component.scss"]
+  selector: "TabsComponent",
+  moduleId: module.id,
+  templateUrl: "./tabs.component.html",
+  styleUrls: ["./tabs.component.scss"]
 })
 export class TabsComponent implements OnInit {
-    private _title: string;
+  @ViewChild('tabView') elementRef: ElementRef;
 
-    constructor() {
-        // Use the component constructor to inject providers.
-    }
+  constructor() { }
 
-    ngOnInit(): void {
-        // Init your component properties here.
-    }
+  ngOnInit(): void {
+    (<TabView>this.elementRef.nativeElement).selectedIndex =
+      appSettings.getNumber('currentTab', 0); // default to tab 0 (Home)
+  }
 
-    get title(): string {
-        return this._title;
-    }
+  getIconSource(icon: string): string {
+    return isAndroid ? "" : "res://tabIcons/" + icon;
+  }
 
-    set title(value: string) {
-        if (this._title !== value) {
-            this._title = value;
-        }
-    }
-
-    getIconSource(icon: string): string {
-        return isAndroid ? "" : "res://tabIcons/" + icon;
-    }
-
-    onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
-        const tabView = <TabView>args.object;
-        const selectedTabViewItem = tabView.items[args.newIndex];
-
-        this.title = selectedTabViewItem.title;
-    }
+  onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
+    appSettings.setNumber('currentTab', args.newIndex);
+  }
 }
