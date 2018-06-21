@@ -22,6 +22,6 @@ export class SmartGoalService {
         goal: smartGoal
       }),
       { headers: this.utilitiesService.createRequestHeaders() }
-    )
+    );
   }
 }
