@@ -1,19 +1,49 @@
+<StackLayout>
 
-<ScrollView #chatScrollView>
-  <StackLayout id="chatBubbles">
-    <StackLayout visibility="" *ngFor="let message of messageList">
-      <GridLayout width="100%" columns="*" rows="auto, 20" class="msg" [ngClass]="message.getClass()">
-        <StackLayout orientation="horizontal" [horizontalAlignment]="message.getHorizAlign()">
-          <Label [text]="message.messageText" textWrap="true" verticalAlignment="top" class="msg_text">
+  <ScrollView height="90%"
+              #chatScrollView>
+    <StackLayout id="chatBubbles">
+      <StackLayout visibility=""
+                   *ngFor="let message of messageList">
+        <GridLayout width="100%"
+                    columns="*"
+                    rows="auto, 20"
+                    class="msg"
+                    [ngClass]="message.getClass()">
+          <StackLayout orientation="horizontal"
+                       [horizontalAlignment]="message.getHorizAlign()">
+            <Label [text]="message.messageText"
+                   textWrap="true"
+                   verticalAlignment="top"
+                   class="msg_text">
+            </Label>
+          </StackLayout>
+          <Label class="msg_timestamp"
+                 [text]="message.createDateTime"
+                 verticalAlignment="top"
+                 row="1"
+                 [colSpan]="message.getColSpan()">
           </Label>
-        </StackLayout>
-        <Label class="msg_timestamp" 
-               [text]="message.createDateTime"
-               verticalAlignment="top"
-               row="1"
-               [colSpan]="message.getColSpan()">
-        </Label>
-      </GridLayout>
+        </GridLayout>
+      </StackLayout>
     </StackLayout>
+  </ScrollView>
+
+  <StackLayout height="10%"
+               orientation="horizontal"
+               [formGroup]="mForm"
+               class="p-5">
+    <TextField formControlName="message"
+               hint="Enter a message..."
+               width="75%">
+    </TextField>
+    <Button type="submit"
+            [isEnabled]="!submitting && mForm.valid"
+            text="Send"
+            (tap)="onSendTap()"
+            width="25%"
+            class="send-button">
+    </Button>
   </StackLayout>
-</ScrollView>
+
+</StackLayout>

@@ -1,26 +1,42 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { UserService } from "~/shared/user/user.service";
-import * as appSettings from "application-settings";
 import { ScrollView } from "ui/scroll-view";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Message } from "~/tabs/messages/message";
+import { MessagesService } from "~/tabs/messages/messages.service";
 
 @Component({
   selector: "Messages",
-  providers: [UserService],
+  providers: [UserService, MessagesService],
   moduleId: module.id,
   templateUrl: "./messages.component.html",
   styleUrls: ["./messages.component.scss"]
 })
 
 export class MessagesComponent implements OnInit {
-  messageList: Array<Message> = [];
-  @ViewChild("chatScrollView") elementRef: ElementRef;;
+  messageList: Array<Message>;
+  @ViewChild("chatScrollView") elementRef: ElementRef;
+  mForm: FormGroup;
+  submitting: boolean = false;
 
-  constructor(private userService:UserService) {}
+  constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private messagesService: MessagesService
+  ) { }
 
   ngOnInit(): void {
-    // Use the "ngOnInit" handler to initialize data for the view.
+    this.mForm = this.formBuilder.group({
+      message: ['', { validators: Validators.required }]
+    });
+
+    this.refreshMessageList();
+  }
+
+  private refreshMessageList() {
     this.userService.getMessages().subscribe(
       (data) => {
+        this.messageList = [];
         data.messages.forEach((message) => {
 
           // I'm pretty sure there's an easier way than this
@@ -35,9 +51,11 @@ export class MessagesComponent implements OnInit {
 
         let scrollView = <ScrollView>this.elementRef.nativeElement;
 
-        setTimeout(function() {
+        // This is an offensive and insulting hack
+        // 250 sometimes is not enough in the simulator
+        setTimeout(function () {
           scrollView.scrollToVerticalOffset(scrollView.scrollableHeight, false);
-        });
+        }, 500);
       },
       (error) => {
         console.log(error);
@@ -45,25 +63,17 @@ export class MessagesComponent implements OnInit {
       }
     );
   }
-}
 
-class Message {
-  constructor(
-    public userId:number,
-    public recipId:number,
-    public messageText:string,
-    public createDateTime:Date
-  ) {}
+  onSendTap(): void {
+    this.submitting = true;
 
-  getClass():string {
-    return (this.userId === appSettings.getNumber("userId") ? "me" : "them");
-  }
-
-  getColSpan():string {
-    return (this.userId === appSettings.getNumber("userId") ? "0" : "2");
-  }
-
-  getHorizAlign(): string {
-    return (this.userId === appSettings.getNumber("userId") ? "right" : "left");
+    this.messagesService.sendMessage(this.mForm.value.message).subscribe(
+      () => {
+        this.refreshMessageList();
+        this.mForm.reset();
+        this.submitting = false;
+      },
+      () => alert("There was an error sending your message.")
+    );
   }
 }

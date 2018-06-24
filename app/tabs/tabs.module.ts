@@ -12,6 +12,7 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { DropDownModule } from "nativescript-drop-down/angular";
 import { SmartGoalComponent } from "~/tabs/smartGoal/smartGoal.component";
 import { MoreComponent } from "~/tabs/more/more.component";
+import { ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MoreComponent } from "~/tabs/more/more.component";
         NativeScriptUIChartModule,
         NativeScriptFormsModule,
         TabsRoutingModule,
-        DropDownModule
+        DropDownModule,
+        ReactiveFormsModule,
     ],
     declarations: [
         TabsComponent,
