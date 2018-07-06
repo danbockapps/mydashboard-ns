@@ -1,23 +1,33 @@
-<RadCartesianChart tkExampleTitle tkToggleNavButton height=300>
-  <DateTimeContinuousAxis
-    tkCartesianHorizontalAxis
-
-    majorStep="Week"
-    dateFormat="MM-dd"
-    labelFitMode="Rotate"
-    labelRotationAngle="1.2">
+<RadCartesianChart tkExampleTitle
+                   tkToggleNavButton
+                   height=300>
+  <DateTimeContinuousAxis tkCartesianHorizontalAxis
+                          majorStep="Week"
+                          dateFormat="MM-dd"
+                          labelFitMode="Rotate"
+                          labelRotationAngle="1.2">
   </DateTimeContinuousAxis>
-  <LinearAxis 
-    tkCartesianVerticalAxis
-    [minimum]="bounds.graphWeightMin"
-    [maximum]="bounds.graphWeightMax"
-    [ios.offset]="bounds.graphWeightMin"
-    [ios.baseline]="bounds.graphWeightMin">
+  <LinearAxis tkCartesianVerticalAxis
+              [minimum]="bounds.graphWeightMin"
+              [maximum]="bounds.graphWeightMax"
+              [ios.offset]="bounds.graphWeightMin"
+              [ios.baseline]="bounds.graphWeightMin">
   </LinearAxis>
-  <LineSeries
-    tkCartesianSeries
-    [items]="weightData"
-    categoryProperty="date"
-    valueProperty="weight">
+  <LineSeries seriesName="Line"
+              tkCartesianSeries
+              [items]="weightData"
+              categoryProperty="date"
+              valueProperty="weight">
   </LineSeries>
+  <RadCartesianChart.palettes>
+    <Palette tkCartesianPalette
+             seriesName="Line">
+      <Palette.entries>
+        <PaletteEntry tkCartesianPaletteEntry
+                      strokeColor="#25bdae"
+                      strokeWidth="3">
+        </PaletteEntry>
+      </Palette.entries>
+    </Palette>
+  </RadCartesianChart.palettes>
 </RadCartesianChart>
