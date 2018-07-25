@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
             });
           }
         },
-        (error) => alert("Unfortunately we could not find your account.")
+        (error) => alert("There was an error loading the home tab.")
       );
     }
   }

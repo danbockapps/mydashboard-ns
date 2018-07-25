@@ -3,6 +3,7 @@ import { Http, Headers, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
 import { Config } from "../config";
 
 // This is TypeScript for var appSettings = require("application-settings");
@@ -33,7 +34,7 @@ export class UserService {
         appSettings.setString("token", data.token);
         appSettings.setNumber("userId", data.userId);
       })
-    //.catch(this.handleErrors);
+      .catch(this.handleErrors);
   }
 
   getDashboard() {
@@ -43,8 +44,8 @@ export class UserService {
       )
       .map(response => {
         return response.json();
-      });
-    //.catch(this.handleErrors);
+      })
+      .catch(this.handleErrors);
   }
 
   getMessages() {
@@ -54,7 +55,8 @@ export class UserService {
       )
       .map(response => {
         return response.json();
-      });
+      })
+      .catch(this.handleErrors);
   }
 
   handleErrors(error: Response) {
