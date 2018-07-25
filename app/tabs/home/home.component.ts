@@ -20,15 +20,15 @@ import { Moment } from "moment";
   styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
-  numWeeks:number = 15; //TODO unhardcode this
-  graphData:ObservableArray<WeightDataPoint>;
-  allData:Array<WeekData>;
-  bounds:WeightGraphBounds;
-  graphStatus:number = 0;
-  dropDownConfig:DropDownConfig = new DropDownConfig();
+  numWeeks: number = 15; //TODO unhardcode this
+  graphData: ObservableArray<WeightDataPoint>;
+  allData: Array<WeekData>;
+  bounds: WeightGraphBounds;
+  graphStatus: number = 0;
+  dropDownConfig: DropDownConfig = new DropDownConfig();
   @ViewChild("dropDown") elementRef: ElementRef
 
-  constructor(readonly userService:UserService, readonly homeService:HomeService) {}
+  constructor(readonly userService: UserService, readonly homeService: HomeService) { }
 
   ngOnInit(): void {
     if (connectivity.getConnectionType() === connectivity.connectionType.none) {
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
       this.userService.getDashboard().subscribe(
         (data) => {
           appSettings.setNumber("userId", data.userId);
-          let startDttm:Moment = moment(data.class.start_dttm);
+          let startDttm: Moment = moment(data.class.start_dttm);
           appSettings.setNumber("startDttm", Number(startDttm.format('X')));
           appSettings.setNumber("classId", data.class.class_id);
 
@@ -48,8 +48,8 @@ export class HomeComponent implements OnInit {
           // if there are null values for weight, which of course is possible.
           this.allData = this.getIndexedData(data.data, this.dropDownConfig.currentWeek);
           this.graphData = this.getObservableArray(data.data);
-          
-          if(this.graphData.length <= 1) {
+
+          if (this.graphData.length <= 1) {
             // Graph isn't gonna show, but needs some dummy bounds so it won't crash
             this.bounds = new WeightGraphBounds(1, 0);
             this.graphStatus = 1;
@@ -60,10 +60,10 @@ export class HomeComponent implements OnInit {
           }
 
           this.dropDownConfig.items = new ValueList<string>();
-          for(let i=0; i <= this.dropDownConfig.currentWeek; i++) {
+          for (let i = 0; i <= this.dropDownConfig.currentWeek; i++) {
             this.dropDownConfig.items.push({
               value: "" + i,
-              display: "Week " + (i+1) + ": " +
+              display: "Week " + (i + 1) + ": " +
                 moment(startDttm).add(i, 'weeks').format("MMMM Do")
             });
           }
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onSubmitButtonTap():void {
+  onSubmitButtonTap(): void {
     this.homeService.postNewData(this.allData[this.dropDownConfig.currentWeek]).subscribe(
       (data) => {
         console.log(JSON.stringify(data));
@@ -91,30 +91,30 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onCaretTap():void {
+  onCaretTap(): void {
     let dropDown = <DropDown>this.elementRef.nativeElement;
     dropDown.open();
   }
 
-  private getObservableArray(weightArray):ObservableArray<WeightDataPoint> {
-    let classStart:Moment = moment(appSettings.getNumber("startDttm"), 'X');
+  private getObservableArray(weightArray): ObservableArray<WeightDataPoint> {
+    let classStart: Moment = moment(appSettings.getNumber("startDttm"), 'X');
 
     // filter here because you can't have null data in a graph
     return new ObservableArray(weightArray.filter(s => s.weight > 0)
-                                          .map(function(datapoint) {
-      return new WeightDataPoint(
-        // moment(classStart) clones the classStart object,
-        // so it doesn't get changed.
-        moment(classStart).add(datapoint.week, 'weeks').toDate(),
-        datapoint.weight
-      );
-    }));
+      .map(function (datapoint) {
+        return new WeightDataPoint(
+          // moment(classStart) clones the classStart object,
+          // so it doesn't get changed.
+          moment(classStart).add(datapoint.week, 'weeks').toDate(),
+          datapoint.weight
+        );
+      }));
   }
 
-  private getBounds(weightData:ObservableArray<WeightDataPoint>):WeightGraphBounds {
-    let maxWeight:number, minWeight:number;
+  private getBounds(weightData: ObservableArray<WeightDataPoint>): WeightGraphBounds {
+    let maxWeight: number, minWeight: number;
 
-    maxWeight = weightData.reduce(function(prev, current) {
+    maxWeight = weightData.reduce(function (prev, current) {
       return (prev.weight > current.weight) ? prev : current;
     }, weightData.getItem(0)).weight;
 
@@ -126,8 +126,8 @@ export class HomeComponent implements OnInit {
     return new WeightGraphBounds(maxWeight + 1, minWeight - 1);
   }
 
-  private getIndexedData(data, currentWeek):Array<WeekData> {
-    let indexed:Array<WeekData> = new Array<WeekData>(this.numWeeks);
+  private getIndexedData(data, currentWeek): Array<WeekData> {
+    let indexed: Array<WeekData> = new Array<WeekData>(this.numWeeks);
 
     data.forEach(element => {
       indexed[element.week] = new WeekData(
@@ -139,8 +139,8 @@ export class HomeComponent implements OnInit {
       );
     });
 
-    for(let i:number=0; i<=currentWeek; i++) {
-      if(!indexed[i]) {
+    for (let i: number = 0; i <= currentWeek; i++) {
+      if (!indexed[i]) {
         indexed[i] = new WeekData(i);
       }
     }

@@ -12,7 +12,7 @@ import { UtilitiesService } from "~/shared/utilities.service";
 
 @Injectable()
 export class UserService {
-  constructor(private http: Http, private utilitiesService:UtilitiesService) {}
+  constructor(private http: Http, private utilitiesService: UtilitiesService) { }
 
   login(user: User) {
     let headers = new Headers();
@@ -26,29 +26,35 @@ export class UserService {
       }),
       { headers: headers }
     )
-    .map(response => response.json())
-    .do(data => {
-      // I don't think Config needs token.
-      //Config.token = data.token;
-      appSettings.setString("token", data.token);
-      appSettings.setNumber("userId", data.userId);
-    })
+      .map(response => response.json())
+      .do(data => {
+        // I don't think Config needs token.
+        //Config.token = data.token;
+        appSettings.setString("token", data.token);
+        appSettings.setNumber("userId", data.userId);
+      })
     //.catch(this.handleErrors);
   }
 
   getDashboard() {
-    return this.http.get(
-      Config.apiUrl + "dashboard", {headers: this.utilitiesService.createRequestHeaders()}
-    )
-    .map(response => response.json())
+    return this.http
+      .get(
+        Config.apiUrl + "dashboard", { headers: this.utilitiesService.createRequestHeaders() }
+      )
+      .map(response => {
+        return response.json();
+      });
     //.catch(this.handleErrors);
   }
 
   getMessages() {
-    return this.http.get(
-      Config.apiUrl + "messages", {headers: this.utilitiesService.createRequestHeaders()} 
-    )
-    .map(response => response.json());
+    return this.http
+      .get(
+        Config.apiUrl + "messages", { headers: this.utilitiesService.createRequestHeaders() }
+      )
+      .map(response => {
+        return response.json();
+      });
   }
 
   handleErrors(error: Response) {
